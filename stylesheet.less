@@ -1,3 +1,12 @@
+// Text Sizes
+@heading-text-size:24;
+@subheading-text-size:20;
+@normal-text-size:16;
+@footnote-text-size:14;
+
+@button-color: blue;
+@button-text-color: white;
+
 body {
   color: black;
   height: 100%;
@@ -51,4 +60,57 @@ button {
   border: none;
   cursor: pointer;
   width: 50%;
+}
+
+.main-screen {
+  text-align: center;
+  margin: 10px auto;
+  max-width: 600px;
+}
+
+h1 {
+  font-size: @heading-text-size;
+  margin-bottom: 50px;
+}
+
+h2 {
+  font-size: @subheading-text-size;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  font-size: @normal-text-size;
+  margin-bottom: 10px;
+}
+
+.add-button, .logout-button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  font-size: @normal-text-size;
+  border: none;
+  background-color: @button-color;
+  color: @button-text-color;
+  cursor: pointer;
+}
+
+.add-button:hover, .logout-button:hover {
+  background-color: lighten(@button-color, 20%); // lightens Button color on hover
+}
+
+footer {
+  margin-top: 10px;
+  font-size: @footnote-text-size;
+}
+
+footer a {
+  text-decoration: none;
+  color: grey;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }
