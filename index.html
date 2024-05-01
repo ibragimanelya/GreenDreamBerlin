@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
-<div class="parentContainer">
+<div class="screen1">
     <h1>Login Form</h1>
     <form action="">
         <label for="usernameId"><b>Username</b></label>
@@ -17,7 +17,54 @@
         <input type="text" id="password" name="password" placeholder="Enter password" required>
         <button type="login">Login</button>
     </form>
+</div>
 
+<div class="screen2">
+    <h3>Hier können Sie Ihren Standort einfügen</h3>
+    <form>
+        <div class="eingabefelder">
+            <label for="name" class="form-label">Name/Title </label>
+            <input type="text" class="form-control" id="name" required>
+        </div>
+        <div class="eingabefelder">
+            <label for="description" class="form-label">Description *</label>
+            <textarea class="form-contorl" id="description" required></textarea>
+        </div>
+        <div class="eingabefelder">
+            <label for="street" class="form-label">Street & House No. *</label>
+            <input type="text" class="form-control" id="street" required>
+        </div>
+        <div class="eingabefelder">
+            <label for="zip" class="form-label">ZIP *</label>
+            <input type="text" class="form-control" id="zip" required>
+        </div>
+        <div class="eingabefelder">
+            <label for="city" class="form-label">City *</label>
+            <input type="text" class="form-control" id="city" required>
+        </div>
+        <div class="eingabefelder">
+            <label for="category" class="form-label">Category *</label>
+            <select class="form-select" id="category" required>
+                <option value="Bike/Cyclists">Bike/Cyclists</option>
+                <option value="Pedestrians">Pedestrians</option>
+                <option value="Public transportation">Public transportation</option>
+                <option value="Cars/Car-Infrastructure">Cars/Car-Infrastructure</option>
+                <option value="Industry">Industry</option>
+                <option value="Parks&Rec">Parks & Rec.</option>
+            </select>
+        </div>
+        <div class="eingabefelder form-check">
+            <input type="checkbox" class="form-check-input" id="temporary">
+            <label class="form-check-label" for="temporary">Temporary</label>
+        </div>
+        <div class="eingabefelder">
+            <label for="formFile" class="form-label">Bild hochladen</label>
+            <input class="form-control" type="file" id="formFile">
+        </div>
+        <button type="submit" class="button-submit">Save/Submit</button>
+        <button type="button" class="button-cancel">Cancel</button>
+
+    </form>
 </div>
 </body>
 </html>
