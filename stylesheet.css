@@ -7,19 +7,17 @@ body {
 .screen1 {
   display: table;
   height: 100%;
-  margin: 0 auto;
   text-align: center;
-  vector-aligh: middle ;
+  margin: 0 auto 100px;
 }
 h1 {
-  color: orange;
   display: block;
-  font-size: 2em;
   margin-block-start: 0.67em;
   margin-block-end: 0.67em;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   font-weight: bold;
+  font-size: 24;
 }
 form {
   background-color: lightgrey;
@@ -38,12 +36,55 @@ input {
   box-sizing: border-box;
 }
 button {
-  background-color: orange;
+  background-color: blue;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
   border: none;
   cursor: pointer;
   width: 50%;
+}
+.main-screen {
+  text-align: center;
+  margin: 10px auto;
+  max-width: 600px;
+}
+h2 {
+  font-size: 20;
+  margin-top: 50px;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  font-size: 16;
+  margin-bottom: 10px;
+}
+.add-button,
+.logout-button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  font-size: 16;
+  border: none;
+  background-color: blue;
+  color: white;
+  cursor: pointer;
+}
+.add-button:hover,
+.logout-button:hover,
+button:hover {
+  background-color: #3d3dff;
+}
+footer {
+  margin-top: 10px;
+  font-size: 14;
+}
+footer a {
+  text-decoration: none;
+  color: grey;
+}
+footer a:hover {
+  text-decoration: underline;
 }
 /*# sourceMappingURL=stylesheet.css.map */
