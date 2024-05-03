@@ -87,4 +87,20 @@ footer a {
 footer a:hover {
   text-decoration: underline;
 }
+.eingabefelder {
+  display: flex;
+  align-items: center;
+}
+.eingabefelder label {
+  margin-right: 10px;
+}
+.eingabefelder.form-check {
+  display: inline-flex;
+  align-items: center;
+  /* Vertically center the checkbox and label */
+}
+.eingabefelder.form-check input[type="checkbox"] {
+  margin-right: 10px;
+  /* Optional: Adjust the space between the checkbox and label */
+}
 /*# sourceMappingURL=stylesheet.css.map */
