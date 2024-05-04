@@ -1,7 +1,7 @@
 # jadelya
 Aufgrund des gescheiterten Klima-Volksentscheid in Berlin am 26.03.2023 wurde ein neues Projekt gestartet. 
 Das Ziel des Projektes besteht darin, herauszufinden, was in Berlin verbessert werden muss, um die Stadt in naher Zukunft nachhaltiger gestalten zu können, so dass sich auch die Anliegen von Bewohner:innen der Außenbezirke von Berlin widerspiegeln. 
-In dieser web-basierte GUI werden 
+In dieser web-basierten GUI werden 
 
 a) Standorte/Infraastruktur, die bzgl. Nachhaltigkeit Verbesserungsbedarf haben
 
