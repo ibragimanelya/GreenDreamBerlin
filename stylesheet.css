@@ -16,6 +16,12 @@ body {
   max-width: 600px;
   margin: 0 auto 100px;
 }
+.screen4 {
+  display: flex;
+  text-align: center;
+  background-color: white;
+  padding: 1%;
+}
 h1 {
   display: block;
   margin-block-start: 0.67em;
@@ -33,6 +39,7 @@ h3 {
   margin-inline-end: 0px;
   font-weight: bold;
   font-size: 24;
+  text-align: center;
 }
 form {
   background-color: lightgrey;
@@ -91,7 +98,7 @@ li {
 .button-submit,
 .button-cancel {
   padding: 10px 20px;
-  margin-top: 20px;
+  margin-top: 10px;
   font-size: 16;
   border: none;
   background-color: blue;
@@ -119,6 +126,8 @@ footer a:hover {
   padding-left: 20px;
   padding-top: 5px;
   padding-bottom: 5px;
+  display: flex;
+  align-items: center;
 }
 .check-box {
   display: block;
@@ -130,20 +139,14 @@ footer a:hover {
 input[type="checkbox"] {
   margin: 0px;
 }
-.eingabefelder {
-  display: flex;
-  align-items: center;
-}
 .eingabefelder label {
   margin-right: 10px;
 }
 .eingabefelder.form-check {
   display: inline-flex;
-  align-items: center;
-  /* Vertically center the checkbox and label */
+  align-items: flex-start;
 }
 .eingabefelder.form-check input[type="checkbox"] {
   margin-right: 10px;
-  /* Optional: Adjust the space between the checkbox and label */
 }
 /*# sourceMappingURL=stylesheet.css.map */

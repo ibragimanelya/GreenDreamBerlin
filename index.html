@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Jadelya</title>
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
@@ -47,7 +47,7 @@
         </div>
         <div class="eingabefelder">
             <label for="description" class="form-label">Description *</label>
-            <textarea class="form-contorl" id="description" required></textarea>
+            <textarea class="form-control" id="description" required></textarea>
         </div>
         <div class="eingabefelder">
             <label for="street" class="form-label">Street & House No. *</label>
@@ -82,10 +82,60 @@
         </div>
         <button type="submit" class="button-submit">Save/Submit</button>
         <button type="button" class="button-cancel">Cancel</button>
-
     </form>
 </div>
 
+<h3>Standort Bearbeiten</h3>
 
+<div class="screen4">
+        <form>
+            <div class="eingabefelder">
+                <label for="name" class="form-label">Name/Title </label>
+                <input type="text" class="form-control" id="nameUpdate" value="Baustelle"
+                       required>
+            </div>
+            <div class="eingabefelder">
+                <label for="description" class="form-label">Description *</label>
+                <textarea class="form-control" id="descriptionUpdate" required>Die Baustelle auf der Brückenstraße sollte eigentlich schon vor einem halben Jahre fertig sein. Leider sind dort kaum Fortschritte zu sehen. Dies führt du einem Umweg von mindestens 15 Minuten für die meisten Studierenden, die normalerweise von Schöneweide die Tram nehmen.
+            </textarea>
+            </div>
+            <div class="eingabefelder">
+                <label for="street" class="form-label">Street & House No. *</label>
+                <input type="text" class="form-control" id="streetUpdate" value="Brückenstraße 9" required>
+            </div>
+            <div class="eingabefelder">
+                <label for="zip" class="form-label">ZIP *</label>
+                <input type="text" class="form-control" id="zipUpdate" value="12459" required>
+            </div>
+            <div class="eingabefelder">
+                <label for="city" class="form-label">City *</label>
+                <input type="text" class="form-control" id="cityUpdate" value="Berlin" required>
+            </div>
+            <div class="eingabefelder">
+                <label for="category" class="form-label">Category *</label>
+                <select class="form-select" id="categoryUpdate" required>
+                    <option value="Bike/Cyclists">Bike/Cyclists</option>
+                    <option value="Pedestrians">Pedestrians</option>
+                    <option selected="Public transportation">Public transportation</option>
+                    <option value="Cars/Car-Infrastructure">Cars/Car-Infrastructure</option>
+                    <option value="Industry">Industry</option>
+                    <option value="Parks&Rec">Parks & Rec.</option>
+                </select>
+            </div>
+            <div class="eingabefelder form-check">
+                <input type="checkbox" class="form-check-input" id="temporaryUpdate" checked>
+                <label class="form-check-label" for="temporary">Temporary</label>
+            </div>
+            <div class="eingabefelder">
+                <label for="formFile" class="form-label">Bild hochladen</label>
+                <input class="form-control" type="file" id="formFileUpdate">
+            </div>
+            <button type="submit" class="button-update">Update</button>
+            <button type="button" class="button-delete">Delete</button>
+            <button type="button" class="button-cancel">Cancel</button>
+        </form>
+
+        <img src="Baustelle.jpg" alt="Symbolbild der Baustelle">
+</div>
 </body>
 </html>
