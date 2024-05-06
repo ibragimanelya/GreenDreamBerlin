@@ -46,7 +46,7 @@ h1 {
 
 h2 {
   font-size: @subheading-text-size;
-  margin-top: 50px;
+  margin-top: 5em;
 }
 
 h3 {
@@ -72,18 +72,18 @@ b {
 
 input {
   width: 50%;
-  padding: 12px 20px;
-  margin: 8px 0;
+  padding: 1.2em 2.0em;
+  margin: 0.8em 0;
   display: inline-block;
-  border: 1px solid #ccc;
+  border: 0.1em solid #ccc;
   box-sizing: border-box;
 }
 
 button {
   background-color: @button-color;
   color: @button-text-color;
-  padding: 14px 20px;
-  margin: 8px 0;
+  padding: 1.4em 2.0em;
+  margin: 0.8em 0;
   border: none;
   cursor: pointer;
   width: 50%;
@@ -96,12 +96,12 @@ ul {
 
 li {
   font-size: @normal-text-size;
-  margin-bottom: 10px;
+  margin-bottom: 1em;
 }
 
 .add-button, .logout-button, .button-submit, .button-cancel, .login-button {
-  padding: 10px 20px;
-  margin-top: 10px;
+  padding: 1em 2em;
+  margin-top: 1em;
   font-size: @normal-text-size;
   border: none;
   background-color: @button-color;
@@ -114,7 +114,7 @@ li {
 }
 
 footer {
-  margin-top: 10px;
+  margin-top: 1em;
   font-size: @footnote-text-size;
 }
 
@@ -129,13 +129,13 @@ footer a:hover {
 
 .eingabefelder {
   text-align: left;
-  padding-left: 20px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-left: 2em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
   display: flex;
   align-items: center;
   label {
-    margin-right: 10px;
+    margin-right: 1em;
   }
   .form-control {
     width: auto;
@@ -144,14 +144,14 @@ footer a:hover {
 
 div.gallery {
   margin: auto;
-  border: 1px solid #ccc;
+  border: 0.1em solid #ccc;
   display: inline-block;
-  width: 180px;
+  width: 18em;
   align-items: center;
 }
 
 div.gallery:hover {
-  border: 1px solid #777;
+  border: 0.1em solid #777;
 }
 
 div.gallery img {
@@ -160,13 +160,32 @@ div.gallery img {
 }
 
 div.desc {
-  padding: 15px;
+  padding: 1.5em;
   text-align: center;
 }
 
-img {
-  width: 100%;
-  height: auto;
+div.screen4 {
+  flex: 1;
+}
+
+div.formular-screen4 {
+  flex: 1;
+  form {
+    margin-left: 2em;
+    margin-right: 2em;
+  }
+}
+
+.image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container img {
+  max-width: 73%;
+  max-height: 100%;
 }
 
 .clearfix:after {
@@ -174,3 +193,5 @@ img {
   display: table;
   clear: both;
 }
+
+

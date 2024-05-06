@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Jadelya</title>
+    <title>GreenDreamBerlin</title>
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
 <div class="screen1">
     <h1>Login Form</h1>
     <form action="">
+        <h3>GreenDreamBerlin</h3>
         <label for="usernameId"><b>Username</b></label>
         <input type="text" id="usernameId" name="username" placeholder="Enter username" required>
         <br>
@@ -19,7 +20,7 @@
 </div>
 <hr>
 <div class="screen2">
-    <h1>Willkommen zu Jadelya, Benutzer!</h1>
+    <h1>Willkommen zu GreenDreamBerlin, Benutzer!</h1>
     <h2>Locations:</h2>
 
         <div class="gallery">
@@ -58,24 +59,24 @@
     <h3>Hier können Sie Ihren Standort einfügen</h3>
     <form>
         <div class="eingabefelder">
-            <label for="name" class="form-label">Name/Title </label>
-            <input type="text" class="form-control" id="name" required>
+            <label for="name" class="form-label">Name/Title *</label>
+            <input type="text" class="form-control" id="name" placeholder="Provide a name" required>
         </div>
         <div class="eingabefelder">
             <label for="description" class="form-label">Description *</label>
-            <textarea class="form-control" id="description" required></textarea>
+            <textarea class="form-control" id="description" placeholder="Provide a description" required></textarea>
         </div>
         <div class="eingabefelder">
             <label for="street" class="form-label">Street & House No. *</label>
-            <input type="text" class="form-control" id="street" required>
+            <input type="text" class="form-control" id="street" placeholder="Provide an address" required>
         </div>
         <div class="eingabefelder">
             <label for="zip" class="form-label">ZIP *</label>
-            <input type="text" class="form-control" id="zip" required>
+            <input type="text" class="form-control" id="zip" placeholder="Provide ZIP" required>
         </div>
         <div class="eingabefelder">
             <label for="city" class="form-label">City *</label>
-            <input type="text" class="form-control" id="city" required>
+            <input type="text" class="form-control" id="city" placeholder="Provide a city" required>
         </div>
         <div class="eingabefelder">
             <label for="category" class="form-label">Category *</label>
@@ -103,6 +104,7 @@
 <hr>
 <h3>Standort Bearbeiten</h3>
 <div class="screen4">
+    <div class="formular-screen4">
     <form>
         <div class="eingabefelder">
             <label for="nameUpdate" class="form-label">Name/Title </label>
@@ -149,8 +151,9 @@
         <button type="button" class="button-delete">Delete</button>
         <button type="button" class="button-cancel">Cancel</button>
     </form>
+    </div>
 
-    <aside>
+    <aside class="image-container">
         <img src="Baustelle_Vert.jpg" alt="Bild der Baustelle">
     </aside>
 </div>
