@@ -12,22 +12,38 @@
         <label for="usernameId"><b>Username</b></label>
         <input type="text" id="usernameId" name="username" placeholder="Enter username" required>
         <br>
-        <br>
         <label for="password"><b>Password</b></label>
         <input type="text" id="password" name="password" placeholder="Enter password" required>
         <button type="login">Login</button>
     </form>
 </div>
-
-<div class="main-screen">
-    <h1>Willkommen zu Jadelya, {Benutzer}!</h1>
-
+<hr>
+<div class="screen2">
+    <h1>Willkommen zu Jadelya, Benutzer!</h1>
     <h2>Locations:</h2>
-    <ul>
-        <li>Fahrradweg am Rathaus Pankow</li>
-        <li>Baustelle auf der Brückenstraße</li>
-        <li>Industrieviertel nahe der HTW Berlin</li>
-    </ul>
+
+        <div class="gallery">
+            <a target="_self" href="Baustelle.jpg">
+                <img src="Baustelle.jpg" alt="Cinque Terre" width="600" height="400">
+            </a>
+            <div class="desc">Baustelle auf der Brückenstraße</div>
+        </div>
+
+        <div class="gallery">
+            <a target="_self" href="Baustelle.jpg">
+                <img src="Baustelle.jpg" alt="Forest" width="600" height="400">
+            </a>
+            <div class="desc">Industrieviertel nahe der HTW Berlin</div>
+        </div>
+
+        <div class="gallery">
+            <a target="_self" href="Baustelle.jpg">
+                <img src="Baustelle.jpg" alt="Northern Lights" width="600" height="400">
+            </a>
+            <div class="desc">Add a description of the image here</div>
+        </div>
+
+    <div class="clearfix"></div>
 
     <button class="add-button">Add</button>
     <button class="logout-button">Logout</button>
@@ -37,7 +53,7 @@
         <a href="#">Datenschutzerklärung</a>
     </footer>
 </div>
-
+<hr>
 <div class="screen3">
     <h3>Hier können Sie Ihren Standort einfügen</h3>
     <form>
@@ -72,9 +88,9 @@
                 <option value="Parks&Rec">Parks & Rec.</option>
             </select>
         </div>
-        <div class="eingabefelder form-check">
-            <input type="checkbox" class="form-check-input" id="temporary">
-            <label class="form-check-label" for="temporary">Temporary</label>
+        <div class="eingabefelder">
+            <label class="form-label" for="temporary">Temporary</label>
+            <input type="checkbox" class="form-control" id="temporary">
         </div>
         <div class="eingabefelder">
             <label for="formFile" class="form-label">Bild hochladen</label>
@@ -84,58 +100,59 @@
         <button type="button" class="button-cancel">Cancel</button>
     </form>
 </div>
-
+<hr>
 <h3>Standort Bearbeiten</h3>
-
 <div class="screen4">
-        <form>
-            <div class="eingabefelder">
-                <label for="name" class="form-label">Name/Title </label>
-                <input type="text" class="form-control" id="nameUpdate" value="Baustelle"
-                       required>
-            </div>
-            <div class="eingabefelder">
-                <label for="description" class="form-label">Description *</label>
-                <textarea class="form-control" id="descriptionUpdate" required>Die Baustelle auf der Brückenstraße sollte eigentlich schon vor einem halben Jahre fertig sein. Leider sind dort kaum Fortschritte zu sehen. Dies führt du einem Umweg von mindestens 15 Minuten für die meisten Studierenden, die normalerweise von Schöneweide die Tram nehmen.
+    <form>
+        <div class="eingabefelder">
+            <label for="nameUpdate" class="form-label">Name/Title </label>
+            <input type="text" class="form-control" id="nameUpdate" value="Baustelle"
+                   required>
+        </div>
+        <div class="eingabefelder">
+            <label for="descriptionUpdate" class="form-label">Description *</label>
+            <textarea class="form-control" id="descriptionUpdate" required>Die Baustelle auf der Brückenstraße sollte eigentlich schon vor einem halben Jahre fertig sein. Leider sind dort kaum Fortschritte zu sehen. Dies führt du einem Umweg von mindestens 15 Minuten für die meisten Studierenden, die normalerweise von Schöneweide die Tram nehmen.
             </textarea>
-            </div>
-            <div class="eingabefelder">
-                <label for="street" class="form-label">Street & House No. *</label>
-                <input type="text" class="form-control" id="streetUpdate" value="Brückenstraße 9" required>
-            </div>
-            <div class="eingabefelder">
-                <label for="zip" class="form-label">ZIP *</label>
-                <input type="text" class="form-control" id="zipUpdate" value="12459" required>
-            </div>
-            <div class="eingabefelder">
-                <label for="city" class="form-label">City *</label>
-                <input type="text" class="form-control" id="cityUpdate" value="Berlin" required>
-            </div>
-            <div class="eingabefelder">
-                <label for="category" class="form-label">Category *</label>
-                <select class="form-select" id="categoryUpdate" required>
-                    <option value="Bike/Cyclists">Bike/Cyclists</option>
-                    <option value="Pedestrians">Pedestrians</option>
-                    <option selected="Public transportation">Public transportation</option>
-                    <option value="Cars/Car-Infrastructure">Cars/Car-Infrastructure</option>
-                    <option value="Industry">Industry</option>
-                    <option value="Parks&Rec">Parks & Rec.</option>
-                </select>
-            </div>
-            <div class="eingabefelder form-check">
-                <input type="checkbox" class="form-check-input" id="temporaryUpdate" checked>
-                <label class="form-check-label" for="temporary">Temporary</label>
-            </div>
-            <div class="eingabefelder">
-                <label for="formFile" class="form-label">Bild hochladen</label>
-                <input class="form-control" type="file" id="formFileUpdate">
-            </div>
-            <button type="submit" class="button-update">Update</button>
-            <button type="button" class="button-delete">Delete</button>
-            <button type="button" class="button-cancel">Cancel</button>
-        </form>
+        </div>
+        <div class="eingabefelder">
+            <label for="streetUpdate" class="form-label">Street & House No. *</label>
+            <input type="text" class="form-control" id="streetUpdate" value="Brückenstraße 9" required>
+        </div>
+        <div class="eingabefelder">
+            <label for="zipUpdate" class="form-label">ZIP *</label>
+            <input type="text" class="form-control" id="zipUpdate" value="12459" required>
+        </div>
+        <div class="eingabefelder">
+            <label for="cityUpdate" class="form-label">City *</label>
+            <input type="text" class="form-control" id="cityUpdate" value="Berlin" required>
+        </div>
+        <div class="eingabefelder">
+            <label for="categoryUpdate" class="form-label">Category *</label>
+            <select class="form-select" id="categoryUpdate" required>
+                <option value="Bike/Cyclists">Bike/Cyclists</option>
+                <option value="Pedestrians">Pedestrians</option>
+                <option selected="Public transportation">Public transportation</option>
+                <option value="Cars/Car-Infrastructure">Cars/Car-Infrastructure</option>
+                <option value="Industry">Industry</option>
+                <option value="Parks&Rec">Parks & Rec.</option>
+            </select>
+        </div>
+        <div class="eingabefelder">
+            <label class="form-label" for="temporaryUpdate">Temporary</label>
+            <input type="checkbox" class="form-control" id="temporaryUpdate">
+        </div>
+        <div class="eingabefelder">
+            <label for="formFileUpdate" class="form-label">Bild hochladen</label>
+            <input class="form-control" type="file" id="formFileUpdate">
+        </div>
+        <button type="submit" class="button-update">Update</button>
+        <button type="button" class="button-delete">Delete</button>
+        <button type="button" class="button-cancel">Cancel</button>
+    </form>
 
+    <aside>
         <img src="Baustelle.jpg" alt="Symbolbild der Baustelle">
+    </aside>
 </div>
 </body>
 </html>
