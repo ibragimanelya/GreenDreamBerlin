@@ -6,8 +6,6 @@ body {
 }
 .screen1 {
   text-align: center;
-  padding-right: 25%;
-  padding-left: 25%;
 }
 .screen2 {
   text-align: center;
@@ -46,7 +44,7 @@ h3 {
 }
 form {
   background-color: lightgrey;
-  display: block;
+  display: inline-block;
   margin: 0;
 }
 b {
