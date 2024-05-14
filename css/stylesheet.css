@@ -27,10 +27,10 @@ h1 {
   margin-inline-end: 0;
   font-weight: bold;
   font-size: 24;
+  text-align: center;
 }
 h2 {
   font-size: 20;
-  margin-top: 5em;
 }
 h3 {
   display: block;
@@ -96,6 +96,7 @@ button:hover {
 footer {
   margin-top: 1em;
   font-size: 14;
+  text-align: center;
 }
 footer a {
   text-decoration: none;
