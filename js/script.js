@@ -50,8 +50,9 @@ let loc3 = {
     image: "img/Elektro_Horiz.jpg"
 }
 
-let locArray = [loc1, loc2, loc3]
+let locArray = [loc1, loc2, loc3] // TODO: Use this Array for displaying the list on the Main Page. Admina should be able to add and remove Locations from this array.
 
+// Hide all Screens by default
 document.getElementById("screen1").style.display = "none";
 document.getElementById("screen2").style.display = "none";
 document.getElementById("screen3").style.display = "none";
@@ -59,25 +60,25 @@ document.getElementById("screen4").style.display = "none";
 
 
 if (userLoggedIn === false) {
-    document.getElementById("screen1").style.display = "block";
+    document.getElementById("screen1").style.display = "block"; // Display Login Screen when nobody is logged in
 }
 const loginUser = function (e) {
     e.preventDefault();
     let username = document.getElementById("usernameId").value;
     let password = document.getElementById("password").value;
-    for (const e of userArray) {
-        if (username === e.username && password === e.password) {
+    for (const e of userArray) { // Compare username and password with User Array
+        if (username === e.username && password === e.password) { // If matching Combination found
             userLoggedIn = true;
             if(e.role === "admin") {
                 isAdmin = true;
-                document.getElementById("addButton").style.display="center";
+                document.getElementById("addButton").style.display="center"; // show add button
             } else {
                 isAdmin = false;
-                document.getElementById("addButton").style.display="none";
+                document.getElementById("addButton").style.display="none"; // hide add button
             }
             document.getElementById("greeting").textContent += ", " + e.name + "!"; // Personal Greeting
-            document.getElementById("screen1").style.display = "none";
-            document.getElementById("screen2").style.display = "block";
+            document.getElementById("screen1").style.display = "none"; // Hide Login Screen
+            document.getElementById("screen2").style.display = "block"; // Show Main Screen
             for (const e of locArray) {
                 //TODO: Create list of Locations on Screen 2 by iterating through Array of Locations
                 //TODO: Instead of hardcoded Locations as it is currently
@@ -90,17 +91,17 @@ const loginUser = function (e) {
 }
 
 const logoutUser = function () {
-    location.reload(); // Reloads Webpage to get default state
+    location.reload(); // Reloads Webpage to get default state, deletes changes
+    //TODO: When admin logs out, save their changes, so that on next login (user or admin) the admins edits save
 }
 
-const viewLocation = function (e) {
+const viewLocation = function (e) { // go to view screen
     e.preventDefault();
-
     document.getElementById("screen2").style.display = "none";
     document.getElementById("screen4").style.display = "block";
 }
 
-const addLocation = function () {
+const addLocation = function () { // go to add screen
     document.getElementById("screen2").style.display = "none";
     document.getElementById("screen3").style.display = "block";
 }
@@ -109,7 +110,7 @@ const saveLocation = function () {
     //TODO
 }
 
-const cancel = function () {
+const cancel = function () { // Go back to location screen, hide other screens
     document.getElementById("screen2").style.display = "block";
     document.getElementById("screen3").style.display = "none";
     document.getElementById("screen4").style.display = "none";
