@@ -50,9 +50,8 @@ let loc3 = {
     image: "img/Elektro_Horiz.jpg"
 }
 
-let locArray = [loc1, loc2, loc3] // TODO: Use this Array for displaying the list on the Main Page. Admina should be able to add and remove Locations from this array.
+let locArray = [loc1, loc2, loc3]
 
-// Hide all Screens by default
 document.getElementById("screen1").style.display = "none";
 document.getElementById("screen2").style.display = "none";
 document.getElementById("screen3").style.display = "none";
@@ -60,29 +59,26 @@ document.getElementById("screen4").style.display = "none";
 
 
 if (userLoggedIn === false) {
-    document.getElementById("screen1").style.display = "block"; // Display Login Screen when nobody is logged in
+    document.getElementById("screen1").style.display = "block";
 }
 const loginUser = function (e) {
     e.preventDefault();
     let username = document.getElementById("usernameId").value;
     let password = document.getElementById("password").value;
-    for (const e of userArray) { // Compare username and password with User Array
-        if (username === e.username && password === e.password) { // If matching Combination found
+    for (const e of userArray) {
+        if (username === e.username && password === e.password) {
             userLoggedIn = true;
             if(e.role === "admin") {
                 isAdmin = true;
-                document.getElementById("addButton").style.display="center"; // show add button
+                document.getElementById("addButton").style.display="center";
             } else {
                 isAdmin = false;
-                document.getElementById("addButton").style.display="none"; // hide add button
+                document.getElementById("addButton").style.display="none";
             }
             document.getElementById("greeting").textContent += ", " + e.name + "!"; // Personal Greeting
-            document.getElementById("screen1").style.display = "none"; // Hide Login Screen
-            document.getElementById("screen2").style.display = "block"; // Show Main Screen
-            for (const e of locArray) {
-                //TODO: Create list of Locations on Screen 2 by iterating through Array of Locations
-                //TODO: Instead of hardcoded Locations as it is currently
-            }
+            document.getElementById("screen1").style.display = "none";
+            document.getElementById("screen2").style.display = "block";
+            showLocations();
         }
     }
     if (userLoggedIn === false) {
@@ -91,17 +87,77 @@ const loginUser = function (e) {
 }
 
 const logoutUser = function () {
-    location.reload(); // Reloads Webpage to get default state, deletes changes
-    //TODO: When admin logs out, save their changes, so that on next login (user or admin) the admins edits save
+    location.reload(); // Reloads Webpage to get default state
 }
 
-const viewLocation = function (e) { // go to view screen
-    e.preventDefault();
+const showLocations = function () {
+    const locationsContainer = document.getElementById("locationsContainer");
+    locationsContainer.innerHTML = "";
+
+    locArray.forEach((location, index) => {
+        const locationDiv = document.createElement("div");
+        locationDiv.classList.add("gallery");
+        locationDiv.onclick = function () {
+            viewLocation(index);
+        };
+
+        const locationImg = document.createElement("img");
+        locationImg.src = location.image;
+        locationImg.alt = location.title;
+
+        const locationDesc = document.createElement("div");
+        locationDesc.classList.add("desc");
+        locationDesc.innerHTML = `${location.title}<br>PLZ: ${location.zip}<br>Stadt: ${location.city}<br>Straße: ${location.street}`;
+
+        locationDiv.appendChild(locationImg);
+        locationDiv.appendChild(locationDesc);
+        locationsContainer.appendChild(locationDiv);
+    });
+};
+
+const viewLocation = function (index) {
+    const locationData = locArray[index];
+
     document.getElementById("screen2").style.display = "none";
     document.getElementById("screen4").style.display = "block";
+
+    document.getElementById("nameUpdate").value = locationData.title;
+    document.getElementById("descriptionUpdate").value = locationData.description;
+    document.getElementById("streetUpdate").value = locationData.street;
+    document.getElementById("zipUpdate").value = locationData.zip;
+    document.getElementById("cityUpdate").value = locationData.city;
+    document.getElementById("categoryUpdate").value = locationData.category;
+    document.getElementById("temporaryUpdate").checked = locationData.temporary;
+
+    const cancelButton = document.getElementById("button-cancel-update-screen");
+    cancelButton.style.display = "inline-block"; // show cancel button for any user
+
+    const deleteButton = document.getElementById("button-delete");
+    const submitButton = document.getElementById("button-update");
+
+    // Show delete and submit buttons only if user is admin
+    let username = document.getElementById("usernameId").value;
+    let password = document.getElementById("password").value;
+    for (const e of userArray) {
+        if (username === e.username && password === e.password) {
+            userLoggedIn = true;
+            if (e.role === "admin") {
+                isAdmin = true;
+                deleteButton.style.display = "inline-block";
+                submitButton.style.display = "inline-block";
+            } else {
+                isAdmin = false;
+                deleteButton.style.display = "none";
+                submitButton.style.display = "none";
+            }
+
+            // TODO show the picture as well
+            // TODO Longitude, Latitude Aufruf
+        }
+    }
 }
 
-const addLocation = function () { // go to add screen
+const addLocation = function () {
     document.getElementById("screen2").style.display = "none";
     document.getElementById("screen3").style.display = "block";
 }
@@ -110,7 +166,7 @@ const saveLocation = function () {
     //TODO
 }
 
-const cancel = function () { // Go back to location screen, hide other screens
+const cancel = function () {
     document.getElementById("screen2").style.display = "block";
     document.getElementById("screen3").style.display = "none";
     document.getElementById("screen4").style.display = "none";
@@ -119,9 +175,6 @@ const cancel = function () { // Go back to location screen, hide other screens
 
 document.getElementById("screen1").onsubmit = loginUser;
 document.getElementById("logoutButton").onclick = logoutUser;
-document.getElementById("location1").onclick = viewLocation;
-document.getElementById("location2").onclick = viewLocation;
-document.getElementById("location3").onclick = viewLocation;
 document.getElementById("addButton").onclick = addLocation;
 document.getElementById("button-submit").onclick = saveLocation;
 document.getElementById("button-cancel").onclick = cancel;

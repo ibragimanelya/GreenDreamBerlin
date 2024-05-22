@@ -20,41 +20,19 @@
         <label for="password"><b>Password</b></label>
         <input type="text" id="password" name="password" placeholder="Enter password" required>
         <button type="submit">Login</button>
+
     </form>
 </div>
 
 <div id="screen2" class="screen2">
     <h2>Locations:</h2>
-
-        <div id="location1" class="gallery">
-            <a target="_self" href="img/Baustelle_Horiz.jpg">
-                <img src="img/Baustelle_Horiz.jpg" alt="Baustelle auf der Brückenstraße">
-            </a>
-            <div id="desc1" class="desc">Baustelle auf der Brückenstraße <br> PLZ: <br> Stadt: <br> Straße: </div>
-        </div>
-
-        <div id="location2" class="gallery">
-            <a target="_self" href="img/Industrie_Horiz.jpg">
-                <img src="img/Industrie_Horiz.jpg" alt="Industriegebiet nahe der HTW Berlin">
-            </a>
-            <div id="desc2" class="desc">Industriegebiet nahe der HTW Berlin <br> PLZ: <br> Stadt: <br> Straße: </div>
-        </div>
-
-        <div id="location3" class="gallery">
-            <a target="_self" href="img/Elektro_Horiz.jpg">
-                <img src="img/Elektro_Horiz.jpg" alt="Ladesäule für Elektroautos">
-            </a>
-            <div id="desc3" class="desc">Ladesäule für Elektroautos <br> PLZ: <br> Stadt: <br> Straße: </div>
-        </div>
-
-    <div class="clearfix"></div>
-
+    <div id="locationsContainer"></div>
     <button id="addButton" class="add-button">Add</button>
     <button id="logoutButton" class="logout-button">Logout</button>
 </div>
 
 <div id="screen3" class="screen3">
-    <h3>Hier können Sie Ihren Standort einfügen</h3>
+    <h3>Details zum Standort</h3>
     <form>
         <div class="eingabefelder">
             <label for="name" class="form-label">Name/Title *</label>
