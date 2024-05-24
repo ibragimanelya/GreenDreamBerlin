@@ -128,6 +128,7 @@ const viewLocation = function (index) {
     document.getElementById("cityUpdate").value = locationData.city;
     document.getElementById("categoryUpdate").value = locationData.category;
     document.getElementById("temporaryUpdate").checked = locationData.temporary;
+    document.getElementById("locatonImage").src = locationData.image;
 
     const cancelButton = document.getElementById("button-cancel-update-screen");
     cancelButton.style.display = "inline-block"; // show cancel button for any user
@@ -143,15 +144,20 @@ const viewLocation = function (index) {
             userLoggedIn = true;
             if (e.role === "admin") {
                 isAdmin = true;
+                header.textContent = "Edit/View Details"
                 deleteButton.style.display = "inline-block";
                 submitButton.style.display = "inline-block";
+
+                deleteButton.onclick = function () {
+                    deleteLocation(index-1);
+                };
+
             } else {
                 isAdmin = false;
+                header.textContent = "View Details"
                 deleteButton.style.display = "none";
                 submitButton.style.display = "none";
             }
-
-            // TODO show the picture as well
             // TODO Longitude, Latitude Aufruf
         }
     }
@@ -160,17 +166,48 @@ const viewLocation = function (index) {
 const addLocation = function () {
     document.getElementById("screen2").style.display = "none";
     document.getElementById("screen3").style.display = "block";
+
+    document.getElementById("name").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("street").value = "";
+    document.getElementById("zip").value = "";
+    document.getElementById("city").value = "";
+    document.getElementById("category").value = "";
+    document.getElementById("temporary").checked = false;
 }
 
-const saveLocation = function () {
-    //TODO
+const saveLocation = function (e) {
+    e.preventDefault();
+
+    const newLocation = {
+        title: document.getElementById("name").value,
+        description: document.getElementById("description").value,
+        street: document.getElementById("street").value,
+        zip: document.getElementById("zip").value,
+        city: document.getElementById("city").value,
+        category: document.getElementById("category").value,
+        temporary: document.getElementById("temporary").checked,
+        image: "img/default.jpg", // Default image for simplicity
+    };
+
+    locArray.push(newLocation);
+    document.getElementById("screen3").style.display = "none";
+    document.getElementById("screen2").style.display = "block";
+    showLocations();
 }
+
+/*const deleteLocation = function (index) {
+    locArray.splice(index, 1);
+
+    document.getElementById("screen4").style.display = "none";
+    document.getElementById("screen2").style.display = "block";
+    showLocations();
+}*/
 
 const cancel = function () {
     document.getElementById("screen2").style.display = "block";
     document.getElementById("screen3").style.display = "none";
     document.getElementById("screen4").style.display = "none";
-
 }
 
 document.getElementById("screen1").onsubmit = loginUser;
@@ -179,6 +216,7 @@ document.getElementById("addButton").onclick = addLocation;
 document.getElementById("button-submit").onclick = saveLocation;
 document.getElementById("button-cancel").onclick = cancel;
 document.getElementById("button-cancel-update-screen").onclick = cancel;
+document.getElementById("button-delete").onclick = deleteLocation;
 
 
 
