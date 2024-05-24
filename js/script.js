@@ -61,6 +61,56 @@ document.getElementById("screen4").style.display = "none";
 if (userLoggedIn === false) {
     document.getElementById("screen1").style.display = "block";
 }
+
+/*const updateUI = function (e) {
+    e.preventDefault();
+
+    if (userLoggedIn) {
+        document.getElementById("screen1").style.display = "none";
+        document.getElementById("screen2").style.display = "block";
+        document.getElementById("greeting").textContent  += ", " + e.name + "!";
+
+        if (isAdmin) {
+            document.getElementById("addButton").style.display = "block";
+        } else {
+            document.getElementById("addButton").style.display = "none";
+        }
+        showLocations();
+    } else {
+        document.getElementById("usernameId").value = "";
+        document.getElementById("password").value = "";
+        document.getElementById("screen1").style.display = "block";
+        document.getElementById("screen2").style.display = "none";
+        document.getElementById("screen3").style.display = "none";
+        document.getElementById("screen4").style.display = "none";
+    }
+}
+
+const loginUser = function (e) {
+    e.preventDefault();
+    let username = document.getElementById("usernameId").value;
+    let password = document.getElementById("password").value;
+
+    for (const e of userArray) {
+        if (username === e.username && password === e.password) {
+            userLoggedIn = true;
+            if (e.role === "admin") {
+                isAdmin = true;
+                updateUI();
+                return;
+            }
+        }
+    }
+    if (userLoggedIn === false) {
+        alert("Username or password is invalid!");
+    }
+}
+
+const logoutUser = function () {
+    userLoggedIn = false;
+    updateUI();
+}*/
+
 const loginUser = function (e) {
     e.preventDefault();
     let username = document.getElementById("usernameId").value;
@@ -87,7 +137,15 @@ const loginUser = function (e) {
 }
 
 const logoutUser = function () {
-    location.reload(); // Reloads Webpage to get default state
+    userLoggedIn = false;
+    isAdmin = false;
+    document.getElementById("greeting").textContent = "";
+    document.getElementById("usernameId").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("screen1").style.display = "block";
+    document.getElementById("screen2").style.display = "none";
+    document.getElementById("screen3").style.display = "none";
+    document.getElementById("screen4").style.display = "none";
 }
 
 const showLocations = function () {
@@ -115,7 +173,10 @@ const showLocations = function () {
     });
 };
 
+let currentIndex = -1;
+
 const viewLocation = function (index) {
+    currentIndex = index;
     const locationData = locArray[index];
 
     document.getElementById("screen2").style.display = "none";
@@ -138,7 +199,7 @@ const viewLocation = function (index) {
 
     // Show delete and submit buttons only if user is admin
     let username = document.getElementById("usernameId").value;
-    let password = document.getElementById("password").value;
+    let password = document.getElementById("passwordId").value;
     for (const e of userArray) {
         if (username === e.username && password === e.password) {
             userLoggedIn = true;
@@ -147,11 +208,6 @@ const viewLocation = function (index) {
                 header.textContent = "Edit/View Details"
                 deleteButton.style.display = "inline-block";
                 submitButton.style.display = "inline-block";
-
-                deleteButton.onclick = function () {
-                    deleteLocation(index-1);
-                };
-
             } else {
                 isAdmin = false;
                 header.textContent = "View Details"
@@ -196,13 +252,39 @@ const saveLocation = function (e) {
     showLocations();
 }
 
-/*const deleteLocation = function (index) {
-    locArray.splice(index, 1);
+const updateLocation = function (e) {
+    e.preventDefault();
+
+    if (currentIndex === -1) {
+        return;
+    }
+
+    const location = locArray[currentIndex];
+    location.title = document.getElementById("nameUpdate").value;
+    location.description = document.getElementById("descriptionUpdate").value;
+    location.street = document.getElementById("streetUpdate").value;
+    location.zip = document.getElementById("zipUpdate").value;
+    location.city = document.getElementById("cityUpdate").value;
+    location.category = document.getElementById("categoryUpdate").value;
+    location.temporary = document.getElementById("temporaryUpdate").checked;
 
     document.getElementById("screen4").style.display = "none";
     document.getElementById("screen2").style.display = "block";
     showLocations();
-}*/
+}
+
+const deleteLocation = function (e) {
+    e.preventDefault();
+
+    if (currentIndex !== -1) {
+        locArray.splice(currentIndex, 1);
+        currentIndex = -1;
+    }
+
+    document.getElementById("screen4").style.display = "none";
+    document.getElementById("screen2").style.display = "block";
+    showLocations();
+}
 
 const cancel = function () {
     document.getElementById("screen2").style.display = "block";
@@ -210,13 +292,14 @@ const cancel = function () {
     document.getElementById("screen4").style.display = "none";
 }
 
-document.getElementById("screen1").onsubmit = loginUser;
+document.getElementById("screen1").onclick = loginUser;
 document.getElementById("logoutButton").onclick = logoutUser;
 document.getElementById("addButton").onclick = addLocation;
 document.getElementById("button-submit").onclick = saveLocation;
 document.getElementById("button-cancel").onclick = cancel;
 document.getElementById("button-cancel-update-screen").onclick = cancel;
 document.getElementById("button-delete").onclick = deleteLocation;
+document.getElementById("button-update").onclick = updateLocation;
 
 
 
