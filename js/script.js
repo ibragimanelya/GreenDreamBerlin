@@ -57,10 +57,32 @@ document.getElementById("screen2").style.display = "none";
 document.getElementById("screen3").style.display = "none";
 document.getElementById("screen4").style.display = "none";
 
-
 if (userLoggedIn === false) {
     document.getElementById("screen1").style.display = "block";
 }
+
+// Listener, um neu hochgeladenes Bild auch vor dem Save/Submit bzw. cancel anzuzeigen
+document.getElementById('formFileUpdate').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('locationImage').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+document.getElementById('formFile').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('locationImage').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
 
 /*const updateUI = function (e) {
     e.preventDefault();
@@ -189,7 +211,7 @@ const viewLocation = function (index) {
     document.getElementById("cityUpdate").value = locationData.city;
     document.getElementById("categoryUpdate").value = locationData.category;
     document.getElementById("temporaryUpdate").checked = locationData.temporary;
-    document.getElementById("locatonImage").src = locationData.image;
+    document.getElementById("locationImage").src = locationData.image;
 
     const cancelButton = document.getElementById("button-cancel-update-screen");
     cancelButton.style.display = "inline-block"; // show cancel button for any user
@@ -230,27 +252,59 @@ const addLocation = function () {
     document.getElementById("city").value = "";
     document.getElementById("category").value = "";
     document.getElementById("temporary").checked = false;
+
+    document.getElementById("formFileUpdate").value = "";
+    document.getElementById("formFile").value = ""; // Clear File Input data
 }
 
 const saveLocation = function (e) {
     e.preventDefault();
 
-    const newLocation = {
-        title: document.getElementById("name").value,
-        description: document.getElementById("description").value,
-        street: document.getElementById("street").value,
-        zip: document.getElementById("zip").value,
-        city: document.getElementById("city").value,
-        category: document.getElementById("category").value,
-        temporary: document.getElementById("temporary").checked,
-        image: "img/default.jpg", // Default image for simplicity
-    };
+    const fileInput = document.getElementById("formFile");
+    const file = fileInput.files[0];
 
-    locArray.push(newLocation);
-    document.getElementById("screen3").style.display = "none";
-    document.getElementById("screen2").style.display = "block";
-    showLocations();
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const newLocation = {
+                title: document.getElementById("name").value,
+                description: document.getElementById("description").value,
+                street: document.getElementById("street").value,
+                zip: document.getElementById("zip").value,
+                city: document.getElementById("city").value,
+                category: document.getElementById("category").value,
+                temporary: document.getElementById("temporary").checked,
+                image: event.target.result // Data URL of the image
+            };
+
+            locArray.push(newLocation);
+            document.getElementById("screen3").style.display = "none";
+            document.getElementById("screen2").style.display = "block";
+            showLocations();
+        };
+        reader.readAsDataURL(file);
+    } else {
+        // If no file is selected, save the location without an image
+        const newLocation = {
+            title: document.getElementById("name").value,
+            description: document.getElementById("description").value,
+            street: document.getElementById("street").value,
+            zip: document.getElementById("zip").value,
+            city: document.getElementById("city").value,
+            category: document.getElementById("category").value,
+            temporary: document.getElementById("temporary").checked,
+            image: null // No image provided
+        };
+
+        locArray.push(newLocation);
+        document.getElementById("screen3").style.display = "none";
+        document.getElementById("screen2").style.display = "block";
+        showLocations();
+    }
+    document.getElementById("formFileUpdate").value = "";
+    document.getElementById("formFile").value = ""; // Clear File Input data
 }
+
 
 const updateLocation = function (e) {
     e.preventDefault();
@@ -268,9 +322,29 @@ const updateLocation = function (e) {
     location.category = document.getElementById("categoryUpdate").value;
     location.temporary = document.getElementById("temporaryUpdate").checked;
 
-    document.getElementById("screen4").style.display = "none";
-    document.getElementById("screen2").style.display = "block";
-    showLocations();
+    const fileInput = document.getElementById("formFileUpdate");
+    const file = fileInput.files[0];
+
+    if (file) { // only change image if file is selected
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            location.image = event.target.result // Data URL of the image
+            document.getElementById("screen4").style.display = "none";
+            document.getElementById("screen2").style.display = "block";
+            showLocations();
+        };
+        reader.readAsDataURL(file);
+    } else {
+        // If no file is selected, don't change the image
+        document.getElementById("screen4").style.display = "none";
+        document.getElementById("screen2").style.display = "block";
+        showLocations();
+    }
+
+
+
+    document.getElementById("formFileUpdate").value = "";
+    document.getElementById("formFile").value = ""; // Clear File Input data
 }
 
 const deleteLocation = function (e) {
@@ -284,12 +358,18 @@ const deleteLocation = function (e) {
     document.getElementById("screen4").style.display = "none";
     document.getElementById("screen2").style.display = "block";
     showLocations();
+
+    document.getElementById("formFileUpdate").value = "";
+    document.getElementById("formFile").value = ""; // Clear File Input data
 }
 
 const cancel = function () {
     document.getElementById("screen2").style.display = "block";
     document.getElementById("screen3").style.display = "none";
     document.getElementById("screen4").style.display = "none";
+
+    document.getElementById("formFileUpdate").value = "";
+    document.getElementById("formFile").value = ""; // Clear File Input data
 }
 
 document.getElementById("screen1").onclick = loginUser;
