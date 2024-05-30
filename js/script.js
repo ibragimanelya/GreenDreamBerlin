@@ -1,5 +1,6 @@
 let userLoggedIn = false;
 let isAdmin = false;
+let apiUrl = "https://nominatim.openstreetmap.org/search?q="
 
 let user1 = {
     username: "admina",
@@ -25,6 +26,8 @@ let loc1 = {
     city: "Berlin",
     category: "Public transportation",
     temporary: true,
+    lat: 52.4580228,
+    lon: 13.511759,
     image: "img/Baustelle_Vert.jpg"
 }
 
@@ -36,6 +39,8 @@ let loc2 = {
     city: "Berlin",
     category: "Industry",
     temporary: false,
+    lat: 52.4573936,
+    lon: 13.5269565,
     image: "img/Industrie_Horiz.jpg"
 }
 
@@ -47,6 +52,8 @@ let loc3 = {
     city: "Berlin",
     category: "Cars/Car-Infrastructure",
     temporary: false,
+    lat: 52.6067482,
+    lon: 13.425493,
     image: "img/Elektro_Horiz.jpg"
 }
 
@@ -209,6 +216,8 @@ const viewLocation = function (index) {
     document.getElementById("streetUpdate").value = locationData.street;
     document.getElementById("zipUpdate").value = locationData.zip;
     document.getElementById("cityUpdate").value = locationData.city;
+    document.getElementById("latitudeUpdate").value = locationData.lat;
+    document.getElementById("longitudeUpdate").value = locationData.lon;
     document.getElementById("categoryUpdate").value = locationData.category;
     document.getElementById("temporaryUpdate").checked = locationData.temporary;
     document.getElementById("locationImage").src = locationData.image;
@@ -236,7 +245,6 @@ const viewLocation = function (index) {
                 deleteButton.style.display = "none";
                 submitButton.style.display = "none";
             }
-            // TODO Longitude, Latitude Aufruf
         }
     }
 }
@@ -250,6 +258,8 @@ const addLocation = function () {
     document.getElementById("street").value = "";
     document.getElementById("zip").value = "";
     document.getElementById("city").value = "";
+    document.getElementById("latitude").value = "";
+    document.getElementById("longitude").value = "";
     document.getElementById("category").value = "";
     document.getElementById("temporary").checked = false;
 
@@ -257,15 +267,21 @@ const addLocation = function () {
     document.getElementById("formFile").value = ""; // Clear File Input data
 }
 
-const saveLocation = function (e) {
+const saveLocation = async function (e) {
     e.preventDefault();
 
+    const result = await logResponse(document.getElementById("street").value + "," + document.getElementById("city").value) // API Request with Query containing entered street and city name
+    if (result.length === 0) {
+        alert("No results found for given Location!");
+    }
+    document.getElementById("latitude").value = result[0].lat;
+    document.getElementById("longitude").value = result[0].lon;
     const fileInput = document.getElementById("formFile");
     const file = fileInput.files[0];
 
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(event) {
+        reader.onload = function (event) {
             const newLocation = {
                 title: document.getElementById("name").value,
                 description: document.getElementById("description").value,
@@ -274,6 +290,8 @@ const saveLocation = function (e) {
                 city: document.getElementById("city").value,
                 category: document.getElementById("category").value,
                 temporary: document.getElementById("temporary").checked,
+                lat: document.getElementById("latitude").value,
+                lon: document.getElementById("longitude").value,
                 image: event.target.result // Data URL of the image
             };
 
@@ -293,6 +311,8 @@ const saveLocation = function (e) {
             city: document.getElementById("city").value,
             category: document.getElementById("category").value,
             temporary: document.getElementById("temporary").checked,
+            lat: document.getElementById("latitude").value,
+            lon: document.getElementById("longitude").value,
             image: null // No image provided
         };
 
@@ -306,12 +326,19 @@ const saveLocation = function (e) {
 }
 
 
-const updateLocation = function (e) {
+const updateLocation = async function (e) {
     e.preventDefault();
 
     if (currentIndex === -1) {
         return;
     }
+
+    const result = await logResponse(document.getElementById("streetUpdate").value + "," + document.getElementById("cityUpdate").value) // API Request with Query containing entered street and city name
+    if (result.length === 0) {
+        alert("No results found for given Location!");
+    }
+    document.getElementById("latitudeUpdate").value = result[0].lat;
+    document.getElementById("longitudeUpdate").value = result[0].lon;
 
     const location = locArray[currentIndex];
     location.title = document.getElementById("nameUpdate").value;
@@ -319,6 +346,8 @@ const updateLocation = function (e) {
     location.street = document.getElementById("streetUpdate").value;
     location.zip = document.getElementById("zipUpdate").value;
     location.city = document.getElementById("cityUpdate").value;
+    location.lat = document.getElementById("latitudeUpdate").value;
+    location.lon = document.getElementById("longitudeUpdate").value;
     location.category = document.getElementById("categoryUpdate").value;
     location.temporary = document.getElementById("temporaryUpdate").checked;
 
@@ -340,8 +369,6 @@ const updateLocation = function (e) {
         document.getElementById("screen2").style.display = "block";
         showLocations();
     }
-
-
 
     document.getElementById("formFileUpdate").value = "";
     document.getElementById("formFile").value = ""; // Clear File Input data
@@ -370,6 +397,21 @@ const cancel = function () {
 
     document.getElementById("formFileUpdate").value = "";
     document.getElementById("formFile").value = ""; // Clear File Input data
+}
+
+async function logResponse(query) {
+    try {
+        const response = await fetch("https://nominatim.openstreetmap.org/search?q=" + query + "&format=json");
+        if (response.ok) {
+            const respObject = await response.json();
+            console.log(respObject);
+            return respObject;  // Return the fetched data
+        } else {
+            alert(" Failed to access server with query " + query);
+        }
+    } catch (err) {
+        alert(" Error connecting to server: " + err.message);
+    }
 }
 
 document.getElementById("screen1").onclick = loginUser;
