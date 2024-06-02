@@ -29,6 +29,9 @@ h1 {
   font-size: 24;
   text-align: center;
 }
+#header {
+  display: block;
+}
 h2 {
   font-size: 20;
 }

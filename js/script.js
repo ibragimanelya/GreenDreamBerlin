@@ -91,59 +91,16 @@ document.getElementById('formFile').addEventListener('change', function(event) {
     }
 });
 
-/*const updateUI = function (e) {
-    e.preventDefault();
-
-    if (userLoggedIn) {
-        document.getElementById("screen1").style.display = "none";
-        document.getElementById("screen2").style.display = "block";
-        document.getElementById("greeting").textContent  += ", " + e.name + "!";
-
-        if (isAdmin) {
-            document.getElementById("addButton").style.display = "block";
-        } else {
-            document.getElementById("addButton").style.display = "none";
-        }
-        showLocations();
-    } else {
-        document.getElementById("usernameId").value = "";
-        document.getElementById("password").value = "";
-        document.getElementById("screen1").style.display = "block";
-        document.getElementById("screen2").style.display = "none";
-        document.getElementById("screen3").style.display = "none";
-        document.getElementById("screen4").style.display = "none";
-    }
-}
-
 const loginUser = function (e) {
     e.preventDefault();
     let username = document.getElementById("usernameId").value;
     let password = document.getElementById("password").value;
 
-    for (const e of userArray) {
-        if (username === e.username && password === e.password) {
-            userLoggedIn = true;
-            if (e.role === "admin") {
-                isAdmin = true;
-                updateUI();
-                return;
-            }
-        }
+    if (username === ""|| password === "") {
+        alert("Please enter both username and password!");
+        return;
     }
-    if (userLoggedIn === false) {
-        alert("Username or password is invalid!");
-    }
-}
 
-const logoutUser = function () {
-    userLoggedIn = false;
-    updateUI();
-}*/
-
-const loginUser = function (e) {
-    e.preventDefault();
-    let username = document.getElementById("usernameId").value;
-    let password = document.getElementById("password").value;
     for (const e of userArray) {
         if (username === e.username && password === e.password) {
             userLoggedIn = true;
@@ -157,9 +114,12 @@ const loginUser = function (e) {
             document.getElementById("greeting").textContent += ", " + e.name + "!"; // Personal Greeting
             document.getElementById("screen1").style.display = "none";
             document.getElementById("screen2").style.display = "block";
+            document.getElementById("header").style.display = "block";
             showLocations();
+            return;
         }
     }
+
     if (userLoggedIn === false) {
         alert("Username or password is invalid");
     }
@@ -168,13 +128,14 @@ const loginUser = function (e) {
 const logoutUser = function () {
     userLoggedIn = false;
     isAdmin = false;
-    document.getElementById("greeting").textContent = "";
+    document.getElementById("greeting").textContent = "Willkommen zu GreenDreamBerlin"; // Personal Greeting
     document.getElementById("usernameId").value = "";
     document.getElementById("password").value = "";
     document.getElementById("screen1").style.display = "block";
     document.getElementById("screen2").style.display = "none";
     document.getElementById("screen3").style.display = "none";
     document.getElementById("screen4").style.display = "none";
+    document.getElementById("header").style.display = "block";
 }
 
 const showLocations = function () {
@@ -228,24 +189,27 @@ const viewLocation = function (index) {
     const deleteButton = document.getElementById("button-delete");
     const submitButton = document.getElementById("button-update");
 
-    // Show delete and submit buttons only if user is admin
-    let username = document.getElementById("usernameId").value;
-    let password = document.getElementById("passwordId").value;
-    for (const e of userArray) {
-        if (username === e.username && password === e.password) {
-            userLoggedIn = true;
-            if (e.role === "admin") {
-                isAdmin = true;
-                header.textContent = "Edit/View Details"
-                deleteButton.style.display = "inline-block";
-                submitButton.style.display = "inline-block";
-            } else {
-                isAdmin = false;
-                header.textContent = "View Details"
-                deleteButton.style.display = "none";
-                submitButton.style.display = "none";
-            }
-        }
+    if (!isAdmin) { // Wenn der Benutzer kein Admin ist
+        document.getElementById("nameUpdate").readOnly = true;
+        document.getElementById("descriptionUpdate").readOnly = true;
+        document.getElementById("streetUpdate").readOnly = true;
+        document.getElementById("zipUpdate").readOnly = true;
+        document.getElementById("cityUpdate").readOnly = true;
+        document.getElementById("latitudeUpdate").readOnly = true;
+        document.getElementById("longitudeUpdate").readOnly = true;
+        document.getElementById("categoryUpdate").disabled = true;
+        document.getElementById("temporaryUpdate").disabled = true;
+    }
+
+
+    if (isAdmin) { // Using the global isAdmin flag
+        document.getElementById("viewEditHeader").textContent = "Edit/View Details"; // Update h3 text
+        deleteButton.style.display = "inline-block";
+        submitButton.style.display = "inline-block";
+    } else {
+        document.getElementById("viewEditHeader").textContent = "View Details"; // Update h3 text
+        deleteButton.style.display = "none";
+        submitButton.style.display = "none";
     }
 }
 
@@ -265,6 +229,7 @@ const addLocation = function () {
 
     document.getElementById("formFileUpdate").value = "";
     document.getElementById("formFile").value = ""; // Clear File Input data
+
 }
 
 const saveLocation = async function (e) {
@@ -295,6 +260,11 @@ const saveLocation = async function (e) {
                 image: event.target.result // Data URL of the image
             };
 
+            if (!newLocation.title || !newLocation.description || !newLocation.street || !newLocation.zip || !newLocation.city || !newLocation.category) {
+                alert("Please fill in all required fields!");
+                return;
+            }
+
             locArray.push(newLocation);
             document.getElementById("screen3").style.display = "none";
             document.getElementById("screen2").style.display = "block";
@@ -315,6 +285,11 @@ const saveLocation = async function (e) {
             lon: document.getElementById("longitude").value,
             image: null // No image provided
         };
+
+        if (!newLocation.title || !newLocation.description || !newLocation.street || !newLocation.zip || !newLocation.city || !newLocation.category) {
+            alert("Please fill in all required fields!");
+            return;
+        }
 
         locArray.push(newLocation);
         document.getElementById("screen3").style.display = "none";
@@ -350,6 +325,11 @@ const updateLocation = async function (e) {
     location.lon = document.getElementById("longitudeUpdate").value;
     location.category = document.getElementById("categoryUpdate").value;
     location.temporary = document.getElementById("temporaryUpdate").checked;
+
+    if (!location.title || !location.description || !location.street || !location.zip || !location.city || !location.category) {
+        alert("Please fill in all required fields!");
+        return;
+    }
 
     const fileInput = document.getElementById("formFileUpdate");
     const file = fileInput.files[0];
@@ -414,7 +394,7 @@ async function logResponse(query) {
     }
 }
 
-document.getElementById("screen1").onclick = loginUser;
+document.getElementById("button-login").onclick = loginUser;
 document.getElementById("logoutButton").onclick = logoutUser;
 document.getElementById("addButton").onclick = addLocation;
 document.getElementById("button-submit").onclick = saveLocation;
