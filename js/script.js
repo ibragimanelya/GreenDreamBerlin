@@ -93,6 +93,7 @@ document.getElementById('formFile').addEventListener('change', function(event) {
 
 const loginUser = function (e) {
     e.preventDefault();
+
     let username = document.getElementById("usernameId").value;
     let password = document.getElementById("password").value;
 
@@ -106,7 +107,7 @@ const loginUser = function (e) {
             userLoggedIn = true;
             if(e.role === "admin") {
                 isAdmin = true;
-                document.getElementById("addButton").style.display="center";
+                document.getElementById("addButton").style.display="inline-block";
             } else {
                 isAdmin = false;
                 document.getElementById("addButton").style.display="none";
@@ -118,6 +119,10 @@ const loginUser = function (e) {
             showLocations();
             return;
         }
+    }
+
+    if (isAdmin) {
+        document.getElementById("addButton").style.display="center";
     }
 
     if (userLoggedIn === false) {
@@ -161,6 +166,7 @@ const showLocations = function () {
         locationDiv.appendChild(locationDesc);
         locationsContainer.appendChild(locationDiv);
     });
+
 };
 
 let currentIndex = -1;
@@ -199,6 +205,18 @@ const viewLocation = function (index) {
         document.getElementById("longitudeUpdate").readOnly = true;
         document.getElementById("categoryUpdate").disabled = true;
         document.getElementById("temporaryUpdate").disabled = true;
+    } else {
+        // Editable for admin users
+        document.getElementById("nameUpdate").readOnly = false;
+        document.getElementById("descriptionUpdate").readOnly = false;
+        document.getElementById("streetUpdate").readOnly = false;
+        document.getElementById("zipUpdate").readOnly = false;
+        document.getElementById("cityUpdate").readOnly = false;
+        document.getElementById("latitudeUpdate").readOnly = false;
+        document.getElementById("longitudeUpdate").readOnly = false;
+        document.getElementById("categoryUpdate").disabled = false;
+        document.getElementById("temporaryUpdate").disabled = false;
+        document.getElementById("formFileUpdate").disabled = false;
     }
 
 
