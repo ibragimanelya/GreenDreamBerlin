@@ -1,6 +1,7 @@
 let userLoggedIn = false;
 let isAdmin = false;
 let apiUrl = "https://nominatim.openstreetmap.org/search?q="
+let responseFormat = "&format=json"
 
 let user1 = {
     username: "admina",
@@ -399,7 +400,7 @@ const cancel = function () {
 
 async function logResponse(query) {
     try {
-        const response = await fetch("https://nominatim.openstreetmap.org/search?q=" + query + "&format=json");
+        const response = await fetch(apiUrl + query + responseFormat);
         if (response.ok) {
             const respObject = await response.json();
             console.log(respObject);
