@@ -3,22 +3,6 @@ let isAdmin = false;
 let apiUrl = "https://nominatim.openstreetmap.org/search?q="
 let responseFormat = "&format=json"
 
-let user1 = {
-    username: "admina",
-    password: "password",
-    role: "admin",
-    name: "Mina"
-}
-
-let user2 = {
-    username: "normalo",
-    password: "password",
-    role: "non-admin",
-    name: "Norman"
-}
-
-let userArray = [user1, user2]
-
 let loc1 = {
     title: "Baustelle",
     description: "Die Baustelle auf der Brückenstraße sollte eigentlich schon vor einem halben Jahre fertig sein. Leider sind dort kaum Fortschritte zu sehen. Dies führt du einem Umweg von mindestens 15 Minuten für die meisten Studierenden, die normalerweise von Schöneweide die Tram nehmen.",
@@ -98,38 +82,45 @@ const loginUser = function (e) {
     let username = document.getElementById("usernameId").value;
     let password = document.getElementById("password").value;
 
-    if (username === ""|| password === "") {
+    if (username === "" || password === "") {
         alert("Please enter both username and password!");
         return;
     }
 
-    for (const e of userArray) {
-        if (username === e.username && password === e.password) {
+    fetch('http://localhost:8000/users', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Invalid credentials');
+            }
+        })
+        .then(user => {
             userLoggedIn = true;
-            if(e.role === "admin") {
+            if (user.role === "admin") {
                 isAdmin = true;
-                document.getElementById("addButton").style.display="inline-block";
+                document.getElementById("addButton").style.display = "inline-block";
             } else {
                 isAdmin = false;
-                document.getElementById("addButton").style.display="none";
+                document.getElementById("addButton").style.display = "none";
             }
-            document.getElementById("greeting").textContent += ", " + e.name + "!"; // Personal Greeting
+            document.getElementById("greeting").textContent += ", " + user.name + "!"; // Personal Greeting
             document.getElementById("screen1").style.display = "none";
             document.getElementById("screen2").style.display = "block";
             document.getElementById("header").style.display = "block";
             showLocations();
-            return;
-        }
-    }
-
-    if (isAdmin) {
-        document.getElementById("addButton").style.display="center";
-    }
-
-    if (userLoggedIn === false) {
-        alert("Username or password is invalid");
-    }
+        })
+        .catch(error => {
+            alert("Username or password is invalid");
+        });
 }
+
 
 const logoutUser = function () {
     userLoggedIn = false;

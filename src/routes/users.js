@@ -6,7 +6,6 @@ const mongoCRUDs = require('../db/mongoCRUDs');
 // Wird bei GET http://localhost:8000/users aufgerufen 
 router.get('/', async function(req, res) {
   try {
-    //let userDoc = await mongo_cruds.findOneUser("admina", "pass1234");
     let users = await mongoCRUDs.findAllUsers();
     if(users)
       res.status(200).json(users);

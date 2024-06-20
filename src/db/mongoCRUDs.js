@@ -1,10 +1,10 @@
 const { MongoClient } = require("mongodb");
 
-// Replace db_user, db_pass, db_name, db_collection
 const db_user = "jadelyadb_admina";
 const db_pass = "pqkM1ZLTC";
 const db_name = "jadelyadb";
-const db_collection = "users"
+const db_collection_users = "users"
+const db_collection_locations = "loc"
 const dbHostname = "mongodb1.f4.htw-berlin.de"
 const dbPort = 27017
 const uri = `mongodb://${db_user}:${db_pass}@${dbHostname}:${dbPort}/${db_name}`;
@@ -18,7 +18,7 @@ MongoCRUDs.prototype.findOneUser  = async function(uNameIn, passwdIn) {
   const client = new MongoClient(uri);
   try {
     const database = client.db(db_name);
-    const users = database.collection(db_collection);
+    const users = database.collection(db_collection_users);
     const query = {username: uNameIn, password: passwdIn};
     const doc = await users.findOne(query);
     if (doc) {
@@ -35,7 +35,7 @@ MongoCRUDs.prototype.findAllUsers  = async function() {
   const client = new MongoClient(uri);
   try {  
     const database = client.db(db_name);
-    const users = database.collection(db_collection);
+    const users = database.collection(db_collection_users);
     const query = {};
     const cursor = users.find(query);
     // Print a message if no documents were found
@@ -43,7 +43,7 @@ MongoCRUDs.prototype.findAllUsers  = async function() {
       console.log("No documents found!");
       return null;
     }
-    let docs = new Array();
+    let docs = [];
     for await (const doc of cursor) {
       delete doc.password;
       docs.push(doc);
