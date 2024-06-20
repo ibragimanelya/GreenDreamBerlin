@@ -283,7 +283,7 @@ const saveLocationToDatabase = async function (newLocation) {
         }
     } catch (error) {
         console.error('Error saving location:', error);
-        alert('Failed to create location.');
+        alert('Failed to create location. Image size too large!');
     }
 }
 
@@ -355,7 +355,7 @@ const updateLocationInDatabase = async function (location) {
         } else {
             const errorText = await response.text();
             console.error('Failed to update location:', errorText);
-            alert('Failed to update location.');
+            alert('Failed to update location. Image size too large!');
         }
     } catch (error) {
         console.error('Error updating location:', error);
