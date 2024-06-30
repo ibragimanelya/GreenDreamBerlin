@@ -3,47 +3,6 @@ let isAdmin = false;
 let apiUrl = "https://nominatim.openstreetmap.org/search?q="
 let responseFormat = "&format=json"
 
-let loc1 = {
-    title: "Baustelle",
-    description: "Die Baustelle auf der Brückenstraße sollte eigentlich schon vor einem halben Jahre fertig sein. Leider sind dort kaum Fortschritte zu sehen. Dies führt du einem Umweg von mindestens 15 Minuten für die meisten Studierenden, die normalerweise von Schöneweide die Tram nehmen.",
-    street: "Brückenstraße 9",
-    zip: 12459,
-    city: "Berlin",
-    category: "Public transportation",
-    temporary: true,
-    lat: 52.4580228,
-    lon: 13.511759,
-    image: "img/Baustelle_Vert.jpg"
-}
-
-let loc2 = {
-    title: "Industriegebiet nahe der HTW Berlin",
-    description: "Das Industriegebiet so nah an der Hochschule verschlimmert die Luftqualität und die Umgebung des sonst ziemlich idyllischen Spreeufers.",
-    street: "Wilhelminenhofstraße 75A",
-    zip: 12459,
-    city: "Berlin",
-    category: "Industry",
-    temporary: false,
-    lat: 52.4573936,
-    lon: 13.5269565,
-    image: "img/Industrie_Horiz.jpg"
-}
-
-let loc3 = {
-    title: "Ladesäule für Elektroautos",
-    description: "Diese Ladesäule ist die einzige im Umkreis und zwar ein guter Anfang, jedoch durch gegebenes Zeitlimit und häufige Besetzung eher unpraktisch.",
-    street: "Arnouxstraße 11",
-    zip: 13127,
-    city: "Berlin",
-    category: "Cars/Car-Infrastructure",
-    temporary: false,
-    lat: 52.6067482,
-    lon: 13.425493,
-    image: "img/Elektro_Horiz.jpg"
-}
-
-let locArray = [loc1, loc2, loc3]
-
 document.getElementById("screen1").style.display = "none";
 document.getElementById("screen2").style.display = "none";
 document.getElementById("screen3").style.display = "none";
@@ -54,22 +13,22 @@ if (userLoggedIn === false) {
 }
 
 // Listener, um neu hochgeladenes Bild auch vor dem Save/Submit bzw. cancel anzuzeigen
-document.getElementById('formFileUpdate').addEventListener('change', function(event) {
+document.getElementById('formFileUpdate').addEventListener('change', function (event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             document.getElementById('locationImage').src = e.target.result;
         };
         reader.readAsDataURL(file);
     }
 });
 
-document.getElementById('formFile').addEventListener('change', function(event) {
+document.getElementById('formFile').addEventListener('change', function (event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             document.getElementById('locationImage').src = e.target.result;
         };
         reader.readAsDataURL(file);
@@ -92,7 +51,7 @@ const loginUser = function (e) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({username, password})
     })
         .then(response => {
             if (response.ok) {
@@ -135,91 +94,111 @@ const logoutUser = function () {
     document.getElementById("header").style.display = "block";
 }
 
-const showLocations = function () {
+const showLocations = async function () {
     const locationsContainer = document.getElementById("locationsContainer");
     locationsContainer.innerHTML = "";
 
-    locArray.forEach((location, index) => {
-        const locationDiv = document.createElement("div");
-        locationDiv.classList.add("gallery");
-        locationDiv.onclick = function () {
-            viewLocation(index);
-        };
+    try {
+        const response = await fetch('/loc');
+        console.log('Response from /loc:, response');
+        if (response.status === 200) {
+            const locArray = await response.json();
+            console.log('Fetched locations:', locArray);
+            locArray.forEach((location, index) => {
+                const locationDiv = document.createElement("div");
+                locationDiv.classList.add("gallery");
+                locationDiv.onclick = function () {
+                    viewLocation(location._id);
+                };
+                const locationImg = document.createElement("img");
+                locationImg.src = location.image;
+                locationImg.alt = location.name;
 
-        const locationImg = document.createElement("img");
-        locationImg.src = location.image;
-        locationImg.alt = location.title;
+                const locationDesc = document.createElement("div");
+                locationDesc.classList.add("desc");
+                locationDesc.innerHTML = `${location.title}<br>PLZ: ${location.zip}<br>Stadt: ${location.city}<br>Straße: ${location.street}`;
 
-        const locationDesc = document.createElement("div");
-        locationDesc.classList.add("desc");
-        locationDesc.innerHTML = `${location.title}<br>PLZ: ${location.zip}<br>Stadt: ${location.city}<br>Straße: ${location.street}`;
-
-        locationDiv.appendChild(locationImg);
-        locationDiv.appendChild(locationDesc);
-        locationsContainer.appendChild(locationDiv);
-    });
-
+                locationDiv.appendChild(locationImg);
+                locationDiv.appendChild(locationDesc);
+                locationsContainer.appendChild(locationDiv);
+            });
+        } else {
+            alert("Failed to load locations.");
+        }
+    } catch (error) {
+        console.error('Error fetching locations', error);
+    }
 };
 
 let currentIndex = -1;
 
-const viewLocation = function (index) {
-    currentIndex = index;
-    const locationData = locArray[index];
+const viewLocation = async function (id) {
+    try {
+        const response = await fetch(`/loc/${id}`);
+        if (response.status === 200) {
+            const locationData = await response.json();
 
-    document.getElementById("screen2").style.display = "none";
-    document.getElementById("screen4").style.display = "block";
+            currentIndex = id;
 
-    document.getElementById("nameUpdate").value = locationData.title;
-    document.getElementById("descriptionUpdate").value = locationData.description;
-    document.getElementById("streetUpdate").value = locationData.street;
-    document.getElementById("zipUpdate").value = locationData.zip;
-    document.getElementById("cityUpdate").value = locationData.city;
-    document.getElementById("latitudeUpdate").value = locationData.lat;
-    document.getElementById("longitudeUpdate").value = locationData.lon;
-    document.getElementById("categoryUpdate").value = locationData.category;
-    document.getElementById("temporaryUpdate").checked = locationData.temporary;
-    document.getElementById("locationImage").src = locationData.image;
+            document.getElementById("screen2").style.display = "none";
+            document.getElementById("screen4").style.display = "block";
 
-    const cancelButton = document.getElementById("button-cancel-update-screen");
-    cancelButton.style.display = "inline-block"; // show cancel button for any user
+            document.getElementById("nameUpdate").value = locationData.title;
+            document.getElementById("descriptionUpdate").value = locationData.description;
+            document.getElementById("streetUpdate").value = locationData.street;
+            document.getElementById("zipUpdate").value = locationData.zip;
+            document.getElementById("cityUpdate").value = locationData.city;
+            document.getElementById("latitudeUpdate").value = locationData.lat;
+            document.getElementById("longitudeUpdate").value = locationData.lon;
+            document.getElementById("categoryUpdate").value = locationData.category;
+            document.getElementById("temporaryUpdate").checked = locationData.temporary;
+            document.getElementById("locationImage").src = locationData.image;
 
-    const deleteButton = document.getElementById("button-delete");
-    const submitButton = document.getElementById("button-update");
+            const cancelButton = document.getElementById("button-cancel-update-screen");
+            cancelButton.style.display = "inline-block"; // show cancel button for any user
 
-    if (!isAdmin) { // Wenn der Benutzer kein Admin ist
-        document.getElementById("nameUpdate").readOnly = true;
-        document.getElementById("descriptionUpdate").readOnly = true;
-        document.getElementById("streetUpdate").readOnly = true;
-        document.getElementById("zipUpdate").readOnly = true;
-        document.getElementById("cityUpdate").readOnly = true;
-        document.getElementById("latitudeUpdate").readOnly = true;
-        document.getElementById("longitudeUpdate").readOnly = true;
-        document.getElementById("categoryUpdate").disabled = true;
-        document.getElementById("temporaryUpdate").disabled = true;
-    } else {
-        // Editable for admin users
-        document.getElementById("nameUpdate").readOnly = false;
-        document.getElementById("descriptionUpdate").readOnly = false;
-        document.getElementById("streetUpdate").readOnly = false;
-        document.getElementById("zipUpdate").readOnly = false;
-        document.getElementById("cityUpdate").readOnly = false;
-        document.getElementById("latitudeUpdate").readOnly = false;
-        document.getElementById("longitudeUpdate").readOnly = false;
-        document.getElementById("categoryUpdate").disabled = false;
-        document.getElementById("temporaryUpdate").disabled = false;
-        document.getElementById("formFileUpdate").disabled = false;
-    }
+            const deleteButton = document.getElementById("button-delete");
+            const submitButton = document.getElementById("button-update");
 
+            if (!isAdmin) { // Wenn der Benutzer kein Admin ist
+                document.getElementById("nameUpdate").readOnly = true;
+                document.getElementById("descriptionUpdate").readOnly = true;
+                document.getElementById("streetUpdate").readOnly = true;
+                document.getElementById("zipUpdate").readOnly = true;
+                document.getElementById("cityUpdate").readOnly = true;
+                document.getElementById("latitudeUpdate").readOnly = true;
+                document.getElementById("longitudeUpdate").readOnly = true;
+                document.getElementById("categoryUpdate").disabled = true;
+                document.getElementById("temporaryUpdate").disabled = true;
+            } else {
+                // Editable for admin users
+                document.getElementById("nameUpdate").readOnly = false;
+                document.getElementById("descriptionUpdate").readOnly = false;
+                document.getElementById("streetUpdate").readOnly = false;
+                document.getElementById("zipUpdate").readOnly = false;
+                document.getElementById("cityUpdate").readOnly = false;
+                document.getElementById("latitudeUpdate").readOnly = true;
+                document.getElementById("longitudeUpdate").readOnly = true;
+                document.getElementById("categoryUpdate").disabled = false;
+                document.getElementById("temporaryUpdate").disabled = false;
+                document.getElementById("formFileUpdate").disabled = false;
+            }
 
-    if (isAdmin) { // Using the global isAdmin flag
-        document.getElementById("viewEditHeader").textContent = "Edit/View Details"; // Update h3 text
-        deleteButton.style.display = "inline-block";
-        submitButton.style.display = "inline-block";
-    } else {
-        document.getElementById("viewEditHeader").textContent = "View Details"; // Update h3 text
-        deleteButton.style.display = "none";
-        submitButton.style.display = "none";
+            if (isAdmin) { // Using the global isAdmin flag
+                document.getElementById("viewEditHeader").textContent = "Edit/View Details"; // Update h3 text
+                deleteButton.style.display = "inline-block";
+                submitButton.style.display = "inline-block";
+            } else {
+                document.getElementById("viewEditHeader").textContent = "View Details"; // Update h3 text
+                deleteButton.style.display = "none";
+                submitButton.style.display = "none";
+            }
+        } else {
+            alert('Failed to load location details.');
+        }
+    } catch (error) {
+        console.error('Error fetching location details', error);
+        alert('failed to load location details.');
     }
 }
 
@@ -245,71 +224,68 @@ const addLocation = function () {
 const saveLocation = async function (e) {
     e.preventDefault();
 
-    const result = await logResponse(document.getElementById("street").value + "," + document.getElementById("city").value) // API Request with Query containing entered street and city name
+    const result = await logResponse(document.getElementById("street").value + "," + document.getElementById("city").value); // API Request with Query containing entered street and city name
     if (result.length === 0) {
         alert("No results found for given Location!");
+        return;
     }
+
     document.getElementById("latitude").value = result[0].lat;
     document.getElementById("longitude").value = result[0].lon;
     const fileInput = document.getElementById("formFile");
     const file = fileInput.files[0];
 
+    const newLocation = {
+        title: document.getElementById("name").value,
+        description: document.getElementById("description").value,
+        street: document.getElementById("street").value,
+        zip: document.getElementById("zip").value,
+        city: document.getElementById("city").value,
+        category: document.getElementById("category").value,
+        temporary: document.getElementById("temporary").checked,
+        lat: document.getElementById("latitude").value,
+        lon: document.getElementById("longitude").value,
+        image: null
+    };
+
     if (file) {
         const reader = new FileReader();
-        reader.onload = function (event) {
-            const newLocation = {
-                title: document.getElementById("name").value,
-                description: document.getElementById("description").value,
-                street: document.getElementById("street").value,
-                zip: document.getElementById("zip").value,
-                city: document.getElementById("city").value,
-                category: document.getElementById("category").value,
-                temporary: document.getElementById("temporary").checked,
-                lat: document.getElementById("latitude").value,
-                lon: document.getElementById("longitude").value,
-                image: event.target.result // Data URL of the image
-            };
-
-            if (!newLocation.title || !newLocation.description || !newLocation.street || !newLocation.zip || !newLocation.city || !newLocation.category) {
-                alert("Please fill in all required fields!");
-                return;
-            }
-
-            locArray.push(newLocation);
-            document.getElementById("screen3").style.display = "none";
-            document.getElementById("screen2").style.display = "block";
-            showLocations();
+        reader.onload = async function (event) {
+            newLocation.image = event.target.result;
+            await saveLocationToDatabase(newLocation);
         };
         reader.readAsDataURL(file);
     } else {
-        // If no file is selected, save the location without an image
-        const newLocation = {
-            title: document.getElementById("name").value,
-            description: document.getElementById("description").value,
-            street: document.getElementById("street").value,
-            zip: document.getElementById("zip").value,
-            city: document.getElementById("city").value,
-            category: document.getElementById("category").value,
-            temporary: document.getElementById("temporary").checked,
-            lat: document.getElementById("latitude").value,
-            lon: document.getElementById("longitude").value,
-            image: null // No image provided
-        };
-
-        if (!newLocation.title || !newLocation.description || !newLocation.street || !newLocation.zip || !newLocation.city || !newLocation.category) {
-            alert("Please fill in all required fields!");
-            return;
-        }
-
-        locArray.push(newLocation);
-        document.getElementById("screen3").style.display = "none";
-        document.getElementById("screen2").style.display = "block";
-        showLocations();
+        await saveLocationToDatabase(newLocation);
     }
+
     document.getElementById("formFileUpdate").value = "";
     document.getElementById("formFile").value = ""; // Clear File Input data
 }
 
+const saveLocationToDatabase = async function (newLocation) {
+    try {
+        const response = await fetch('/loc', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newLocation),
+        });
+
+        if (response.status === 201) {
+            console.log('Location created successfully');
+            document.getElementById("screen3").style.display = "none";
+            document.getElementById("screen2").style.display = "block";
+            await showLocations(); // Refresh locations after adding a new one
+        } else {
+            alert('Failed to create location.');
+        }
+    } catch (error) {
+        console.error('Error saving location:', error);
+        alert('Failed to create location.');
+    }
+}
 
 const updateLocation = async function (e) {
     e.preventDefault();
@@ -321,63 +297,93 @@ const updateLocation = async function (e) {
     const result = await logResponse(document.getElementById("streetUpdate").value + "," + document.getElementById("cityUpdate").value) // API Request with Query containing entered street and city name
     if (result.length === 0) {
         alert("No results found for given Location!");
+        return;
     }
     document.getElementById("latitudeUpdate").value = result[0].lat;
     document.getElementById("longitudeUpdate").value = result[0].lon;
 
-    const location = locArray[currentIndex];
-    location.title = document.getElementById("nameUpdate").value;
-    location.description = document.getElementById("descriptionUpdate").value;
-    location.street = document.getElementById("streetUpdate").value;
-    location.zip = document.getElementById("zipUpdate").value;
-    location.city = document.getElementById("cityUpdate").value;
-    location.lat = document.getElementById("latitudeUpdate").value;
-    location.lon = document.getElementById("longitudeUpdate").value;
-    location.category = document.getElementById("categoryUpdate").value;
-    location.temporary = document.getElementById("temporaryUpdate").checked;
-
-    if (!location.title || !location.description || !location.street || !location.zip || !location.city || !location.category) {
-        alert("Please fill in all required fields!");
-        return;
-    }
+    const location = {
+        title: document.getElementById("nameUpdate").value,
+        description: document.getElementById("descriptionUpdate").value,
+        street: document.getElementById("streetUpdate").value,
+        zip: document.getElementById("zipUpdate").value,
+        city: document.getElementById("cityUpdate").value,
+        lat: document.getElementById("latitudeUpdate").value,
+        lon: document.getElementById("longitudeUpdate").value,
+        category: document.getElementById("categoryUpdate").value,
+        temporary: document.getElementById("temporaryUpdate").checked,
+        image: null,
+    };
 
     const fileInput = document.getElementById("formFileUpdate");
     const file = fileInput.files[0];
 
-    if (file) { // only change image if file is selected
+    if (file) {
         const reader = new FileReader();
-        reader.onload = function(event) {
-            location.image = event.target.result // Data URL of the image
-            document.getElementById("screen4").style.display = "none";
-            document.getElementById("screen2").style.display = "block";
-            showLocations();
+        reader.onload = async function (event) {
+            location.image = event.target.result;
+            await updateLocationInDatabase(location);
         };
         reader.readAsDataURL(file);
     } else {
-        // If no file is selected, don't change the image
-        document.getElementById("screen4").style.display = "none";
-        document.getElementById("screen2").style.display = "block";
-        showLocations();
+        await updateLocationInDatabase(location);
     }
 
     document.getElementById("formFileUpdate").value = "";
-    document.getElementById("formFile").value = ""; // Clear File Input data
+    document.getElementById("formFile").value = "";
 }
 
-const deleteLocation = function (e) {
+const updateLocationInDatabase = async function (location) {
+    try {
+        console.log('Updating location with ID:', currentIndex); // Add logging
+        console.log('Updated data:', location); // Add logging
+
+        const response = await fetch(`/loc/${currentIndex}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(location),
+        });
+
+        if (response.status === 204) {
+            document.getElementById("screen4").style.display = "none";
+            document.getElementById("screen2").style.display = "block";
+            await showLocations();
+        } else if (response.status === 404) {
+            alert('Location not found');
+        } else {
+            const errorText = await response.text();
+            console.error('Failed to update location:', errorText);
+            alert('Failed to update location.');
+        }
+    } catch (error) {
+        console.error('Error updating location:', error);
+    }
+}
+
+const deleteLocation = async function (e) {
     e.preventDefault();
 
     if (currentIndex !== -1) {
-        locArray.splice(currentIndex, 1);
-        currentIndex = -1;
+        try {
+            const response = await fetch(`/loc/${currentIndex}`, {
+                method: 'DELETE',
+            });
+
+            if (response.status === 204) {
+                currentIndex = -1;
+                document.getElementById("screen4").style.display = "none";
+                document.getElementById("screen2").style.display = "block";
+                showLocations();
+            } else {
+                alert('Failed to delete location.');
+            }
+        } catch (error) {
+            console.error('Error deleting location:', error);
+            alert('Failed to delete location.');
+        }
     }
-
-    document.getElementById("screen4").style.display = "none";
-    document.getElementById("screen2").style.display = "block";
-    showLocations();
-
-    document.getElementById("formFileUpdate").value = "";
-    document.getElementById("formFile").value = ""; // Clear File Input data
 }
 
 const cancel = function () {
@@ -412,7 +418,3 @@ document.getElementById("button-cancel").onclick = cancel;
 document.getElementById("button-cancel-update-screen").onclick = cancel;
 document.getElementById("button-delete").onclick = deleteLocation;
 document.getElementById("button-update").onclick = updateLocation;
-
-
-
-

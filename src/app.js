@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const locRouter = require('./routes/loc');
 
 let app = express();
 
@@ -15,6 +16,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use('/', indexRouter);
 
 app.use('/users', usersRouter);
+app.use('/loc', locRouter);
 
 // send "Not found" for all other 'paths'
 app.use(function(req, res) {
