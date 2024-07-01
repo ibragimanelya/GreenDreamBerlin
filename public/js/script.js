@@ -302,6 +302,14 @@ const updateLocation = async function (e) {
     document.getElementById("latitudeUpdate").value = result[0].lat;
     document.getElementById("longitudeUpdate").value = result[0].lon;
 
+    // Fetch the existing location to get the current image if not updated
+    const existingLocationResponse = await fetch(`/loc/${currentIndex}`);
+    if (!existingLocationResponse.ok) {
+        alert('Failed to fetch existing location data.');
+        return;
+    }
+    const existingLocation = await existingLocationResponse.json();
+
     const location = {
         title: document.getElementById("nameUpdate").value,
         description: document.getElementById("descriptionUpdate").value,
@@ -312,7 +320,7 @@ const updateLocation = async function (e) {
         lon: document.getElementById("longitudeUpdate").value,
         category: document.getElementById("categoryUpdate").value,
         temporary: document.getElementById("temporaryUpdate").checked,
-        image: null,
+        image: existingLocation.image,
     };
 
     const fileInput = document.getElementById("formFileUpdate");
