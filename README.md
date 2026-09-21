@@ -14,4 +14,4 @@ b) existierende Standorte/Infrastruktur, die sich negativ auf Nachhaltigkeit aus
 c) fehlende Infrastruktur, die sich positiv auf Nachhaltigkeit auswirken würde
 dokumentiert.
 
-Entwickler: Anel Ibragim (587828), Jaden Elijah Diodone (587916).
+Entwickler: Anel Ibragim, Jaden Elijah Diodone.
